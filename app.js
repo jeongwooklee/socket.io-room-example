@@ -37,5 +37,15 @@ server.listen(app.get('port'), function(){
 
 // Socket.io
 io.sockets.on('connection', function(socket) {
+
+  // Join Room
+  socket.on('join:room', function(data) {
+    socket.join('room' + data.roomId);
+  });
+
+  // Broadcast to room
+  socket.on('send:message', function(data) {
+    io.sockets.in('room' + data.roomId).emit('send:message', data.message);
+  });
 });
 
